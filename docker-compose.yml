@@ -1,0 +1,26 @@
+services:
+  api:
+    build: .
+    ports:
+      - "3500:3500"
+    environment:
+      - PORT=3500
+      - DATABASE_URL=file:./dev.db
+      - JWT_SECRET=supersecretkey
+      - MAIL_HOST=mailhog
+      - MAIL_PORT=1025
+      - MAIL_USER=user
+      - MAIL_PASS=pass
+      - MAIL_FROM=noreply@example.com
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - mailhog
+    command: npm run start:dev
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025" # SMTP
+      - "8025:8025" # UI
